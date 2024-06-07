@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Cursor Icon Plugin</title>
+</head>
+<body>
+  <div>
+    <h3>Selected Element</h3>
+    <p id="selected-element">No element selected</p>
+  </div>
+  <div>
+    <h3>Add Cursor Icon</h3>
+    <button onclick="addCursorIcon('Beachball', 'assets/Beachball.svg')">Beachball</button>
+    <button onclick="addCursorIcon('Busy', 'assets/Busy.svg')">Busy</button>
+    <button onclick="addCursorIcon('Copy', 'assets/Copy.svg')">Copy</button>
+    <button onclick="addCursorIcon('Cross', 'assets/Cross.svg')">Cross</button>
+    <button onclick="addCursorIcon('Default', 'assets/Default.svg')">Default</button>
+    <button onclick="addCursorIcon('Hand', 'assets/Hand.svg')">Hand</button>
+    <button onclick="addCursorIcon('Help', 'assets/Help.svg')">Help</button>
+    <button onclick="addCursorIcon('Move', 'assets/Move.svg')">Move</button>
+    <button onclick="addCursorIcon('Resize Down', 'assets/Resize (Down).svg')">Resize Down</button>
+    <button onclick="addCursorIcon('Resize Left', 'assets/Resize (Left).svg')">Resize Left</button>
+    <button onclick="addCursorIcon('Resize Left-Right', 'assets/Resize (Left-Right).svg')">Resize Left-Right</button>
+    <button onclick="addCursorIcon('Resize Right', 'assets/Resize (Right).svg')">Resize Right</button>
+    <button onclick="addCursorIcon('Resize Up', 'assets/Resize (Up).svg')">Resize Up</button>
+    <button onclick="addCursorIcon('Resize Up-Down', 'assets/Resize (Up-Down).svg')">Resize Up-Down</button>
+    <button onclick="addCursorIcon('Text Cursor', 'assets/Text Cursor.svg')">Text Cursor</button>
+    <button onclick="addCursorIcon('Zoom In', 'assets/Zoom In.svg')">Zoom In</button>
+    <button onclick="addCursorIcon('Zoom Out', 'assets/Zoom Out.svg')">Zoom Out</button>
+  </div>
+  <script>
+    function addCursorIcon(iconType, iconImageUrl) {
+      const baseUrl = window.location.href.replace(/\/[^\/]*$/, '/');
+      const fullUrl = baseUrl + iconImageUrl;
+      parent.postMessage({ pluginMessage: { type: 'addCursorIcon', iconType, iconImageUrl: fullUrl } }, '*');
+    }
+
+    onmessage = event => {
+      const message = event.data.pluginMessage;
+      if (message.type === 'selectionChanged') {
+        document.getElementById('selected-element').innerText = `ID: ${message.id}, Name: ${message.name}, Width: ${message.width}, Height: ${message.height}`;
+      } else if (message.type === 'selectionCleared') {
+        document.getElementById('selected-element').innerText = 'No element selected';
+      }
+    };
+  </script>
+</body>
+</html>
